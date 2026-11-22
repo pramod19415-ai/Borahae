@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Borahae: A BTS Documentary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&family=Newsreader:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1ff;--bg2:#ece3ff;--ink:#1d1236;--mute:#5d4c85;--pur:#7b3fe4;--pur2:#b388ff;--card:#ffffffcc;--line:#7b3fe433;--glow:#7b3fe440;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0720;--bg2:#1a0f3a;--ink:#f3ecff;--mute:#b9a6e6;--pur:#a678ff;--pur2:#d4bbff;--card:#1e1245cc;--line:#a678ff44;--glow:#a678ff55}}
+:root[data-theme="dark"]{--bg:#0d0720;--bg2:#1a0f3a;--ink:#f3ecff;--mute:#b9a6e6;--pur:#a678ff;--pur2:#d4bbff;--card:#1e1245cc;--line:#a678ff44;--glow:#a678ff55}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.65 "Bricolage Grotesque",system-ui,sans-serif;overflow-x:hidden}
+canvas#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,header,footer{position:relative;z-index:1}
+section{max-width:960px;margin:0 auto;padding:4.5rem 1.25rem}
+h2{font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.1;margin:0 0 .6rem;font-weight:800}
+.sub{color:var(--mute);max-width:56ch;margin:0 0 2rem}
+.bar{position:fixed;top:env(safe-area-inset-top,0px);right:.75rem;z-index:5;display:flex;gap:.5rem;padding-top:.6rem}
+button{font:inherit;cursor:pointer;color:var(--ink)}
+.chip{border:1px solid var(--line);background:var(--card);backdrop-filter:blur(8px);border-radius:999px;padding:.45rem .9rem;font-size:.85rem}
+.chip[aria-pressed=true]{background:var(--pur);color:#fff;border-color:var(--pur)}
+:focus-visible{outline:3px solid var(--pur2);outline-offset:3px}
+/* hero */
+.hero{min-height:100svh;display:grid;place-items:center;text-align:center;padding:5rem 1.25rem 3rem;background:radial-gradient(ellipse at 50% 30%,var(--bg2),var(--bg) 70%)}
+.orbs{position:relative;height:120px;width:min(520px,90vw);margin:0 auto 1.5rem}
+.orb{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--c);box-shadow:0 0 18px 6px var(--c);left:calc(var(--i)*14.2%);top:50%;animation:bob 4s ease-in-out infinite;animation-delay:calc(var(--i)*-.55s)}
+@keyframes bob{50%{transform:translateY(-34px) scale(1.25)}}
+h1{font-size:clamp(3rem,13vw,7.5rem);line-height:.95;margin:0;font-weight:800;letter-spacing:-.03em;background:linear-gradient(100deg,var(--pur),#ff7ad9,var(--pur2),var(--pur));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
+@keyframes shine{to{background-position:300% 0}}
+.tag{font-family:Newsreader,Georgia,serif;font-style:italic;font-size:clamp(1.1rem,3vw,1.6rem);color:var(--mute);margin:1rem 0 2rem}
+.cta{display:inline-block;background:var(--pur);color:#fff;border:0;border-radius:999px;padding:.85rem 1.6rem;font-weight:700;text-decoration:none;box-shadow:0 8px 30px var(--glow);transition:transform .2s}
+.cta:hover{transform:scale(1.05)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem}
+.stat{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:1.2rem}
+.stat b{display:block;font-size:2.4rem;color:var(--pur);line-height:1}
+/* timeline */
+.tl{position:relative;margin-left:.6rem;padding-left:1.6rem;border-left:2px solid var(--line)}
+.ev{position:relative;margin-bottom:2rem;opacity:0;transform:translateX(-24px);transition:all .7s}
+.ev.in{opacity:1;transform:none}
+.ev::before{content:"";position:absolute;left:-2.15rem;top:.45rem;width:14px;height:14px;border-radius:50%;background:var(--pur);box-shadow:0 0 0 5px var(--glow)}
+.ev h3{margin:0;font-size:1.25rem}.ev .y{color:var(--pur);font-weight:800}
+.ev p{margin:.2rem 0 0;color:var(--mute)}
+/* members */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem}
+.mem{perspective:900px;height:190px;border:0;background:none;padding:0;text-align:left}
+.in2{position:relative;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d}
+.mem.flip .in2{transform:rotateY(180deg)}
+.f,.b{position:absolute;inset:0;border-radius:22px;padding:1.1rem;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--line)}
+.f{background:linear-gradient(160deg,color-mix(in srgb,var(--c) 70%,#000),var(--c));color:#fff}
+.f b{font-size:1.6rem;line-height:1}.f span{opacity:.9;font-size:.85rem}
+.b{background:var(--card);transform:rotateY(180deg);justify-content:center;font-family:Newsreader,Georgia,serif;font-style:italic;font-size:1.02rem;border-color:var(--c)}
+/* poll */
+.poll{border:1px solid var(--line);background:var(--card);border-radius:24px;padding:1.4rem}
+.opt{display:block;width:100%;position:relative;overflow:hidden;text-align:left;border:1px solid var(--line);background:transparent;border-radius:14px;padding:.75rem 1rem;margin-bottom:.6rem}
+.opt i{position:absolute;inset:0 auto 0 0;width:0;background:var(--glow);transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.opt span{position:relative;display:flex;justify-content:space-between}
+.opt:hover{border-color:var(--pur)}
+.opt.mine{border-color:var(--pur);font-weight:700}
+.note{font-size:.8rem;color:var(--mute)}
+/* shayari */
+.shayari{border-radius:28px;padding:2rem 1.4rem;text-align:center;background:linear-gradient(135deg,var(--bg2),var(--card));border:1px solid var(--line)}
+#sh{font-family:Newsreader,Georgia,serif;font-style:italic;font-size:clamp(1.25rem,4vw,1.9rem);line-height:1.6;min-height:7.5em;white-space:pre-line;margin:0 0 1.2rem}
+.row{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+/* army */
+.army{text-align:center}
+#heart{font-size:5rem;background:none;border:0;transition:transform .15s;filter:drop-shadow(0 0 20px var(--pur))}
+#heart:active{transform:scale(1.3)}
+#cnt{font-size:2.2rem;font-weight:800;color:var(--pur)}
+footer{text-align:center;padding:3rem 1.25rem 4rem;color:var(--mute)}
+#wand{position:fixed;width:90px;height:90px;border-radius:50%;pointer-events:none;z-index:4;background:radial-gradient(circle,#ff7ad9aa,#a678ff55 45%,transparent 70%);transform:translate(-50%,-50%);display:none;mix-blend-mode:screen}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.ev{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas><div id="wand"></div>
+<div class="bar">
+<button class="chip" id="wb" aria-pressed="false">💜 Light stick</button>
+<button class="chip" id="tb" aria-label="Toggle dark or light theme">🌗</button>
+</div>
+
+<header class="hero">
+<div>
+<div class="orbs" aria-hidden="true"></div>
+<h1>Borahae</h1>
+<p class="tag">Seven voices. One purple sky. A documentary of BTS.</p>
+<a class="cta" href="#story">Start the story</a>
+</div>
+</header>
+
+<main>
+<section id="numbers">
+<h2>Thirteen years and counting</h2>
+<p class="sub">From a small Seoul company to stadiums around the world, here is the journey in a few numbers.</p>
+<div class="stats">
+<div class="stat"><b data-n="7">0</b>members</div>
+<div class="stat"><b id="yrs" data-n="13">0</b>years since debut</div>
+<div class="stat"><b id="days">0</b>days to the next anniversary</div>
+<div class="stat"><b data-n="1">0</b>ARMY, everywhere</div>
+</div>
+</section>
+
+<section id="story">
+<h2>The story so far</h2>
+<p class="sub">Scroll slowly. Each moment lights up as you reach it.</p>
+<div class="tl">
+<div class="ev"><span class="y">2013</span><h3>Debut</h3><p>BTS debut on 13 June with "No More Dream." Seven young artists, big dreams and a lot of hard work.</p></div>
+<div class="ev"><span class="y">2013</span><h3>ARMY is born</h3><p>The fandom takes its name, Adorable Representative M.C. for Youth. The bond with fans becomes the heart of everything.</p></div>
+<div class="ev"><span class="y">2016</span><h3>Wings</h3><p>The group's storytelling deepens with the Wings era, mixing personal journeys, art and music.</p></div>
+<div class="ev"><span class="y">2018</span><h3>Love Yourself</h3><p>A message of self-love reaches a global audience, and the group's album tops the Billboard 200.</p></div>
+<div class="ev"><span class="y">2020</span><h3>Dynamite</h3><p>A bright, hopeful song arrives during a hard year and reaches number one on the Billboard Hot 100.</p></div>
+<div class="ev"><span class="y">2022</span><h3>Proof</h3><p>An anthology looks back on the road travelled. The group then begins its mandatory military service, one by one.</p></div>
+<div class="ev"><span class="y">2025</span><h3>Together again</h3><p>With all seven members back, the story continues, and ARMY is still right there waiting.</p></div>
+</div>
+</section>
+
+<section id="members">
+<h2>Meet the seven</h2>
+<p class="sub">Tap a card to flip it. Every line on the back is an original shayari written for this page.</p>
+<div class="grid" id="mg"></div>
+</section>
+
+<section id="poll">
+<h2>Who is your bias?</h2>
+<p class="sub">Pick one member and watch the bars move.</p>
+<div class="poll"><div id="po"></div><p class="note" id="pn">Results are saved on your device only.</p></div>
+</section>
+
+<section id="shayari">
+<h2>Shayari for ARMY</h2>
+<p class="sub">Original Hinglish couplets, written with love. Press the button for a new one.</p>
+<div class="shayari">
+<p id="sh" aria-live="polite"></p>
+<div class="row"><button class="cta" id="nx">Naya shayari</button><button class="chip" id="cp">Copy</button></div>
+</div>
+</section>
+
+<section class="army">
+<h2>Send purple love</h2>
+<p class="sub" style="margin-inline:auto">Tap the heart. Every tap sends a burst of purple across the screen.</p>
+<button id="heart" aria-label="Send a purple heart">💜</button>
+<div id="cnt">0</div><div class="note">hearts sent from this device</div>
+</section>
+</main>
+
+<footer>
+<p style="font-family:Newsreader,Georgia,serif;font-style:italic;font-size:1.3rem;margin:0">Borahae means “I purple you.”</p>
+<p class="note">A fan-made tribute page, not affiliated with BTS or HYBE.</p>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s),RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const M=[
+["RM","Leader, rapper","#6c63ff","Shabdon se jo pul banaye, wahi sabko jodta hai,\nlead karna sirf aage chalna nahi, saath chalna hota hai."],
+["Jin","Vocalist","#ff6b9d","Hansi uski jaise subah ki pehli dhoop,\nthake dilon ko de jaaye thoda sukoon."],
+["Suga","Rapper, producer","#8a8fa8","Khamoshi mein bhi ek dhun bunta hai woh,\nzakhm ko lafzon ki taqat banata hai woh."],
+["J-Hope","Rapper, dancer","#ffb347","Jahan woh chale, wahan roshni khud aa jaaye,\nnaach mein uske umeed ka sooraj muskuraaye."],
+["Jimin","Vocalist, dancer","#ff8fd8","Nazakat mein bhi hai fauladi iraada,\nuski awaaz mein rooh ka ek tukda."],
+["V","Vocalist","#4fc3d9","Aawaaz gehri jaise raat ka samundar,\nsuno toh dil mein utre sapnon ka manzar."],
+["Jung Kook","Main vocalist","#b388ff","Chhota sa sapna, ab aasmaan chhoota hai,\nmehnat ka har kadam ek taara banta hai."]];
+const SH=[
+"Andhere mein bhi jo roshni de jaaye,\nwahi geet apna sa lagta hai.\nSaat dil jab ek dhun mein dhadke,\ntoh duniya ka darr kam lagta hai.",
+"Mushkilon ne roka bahut, par kadam ruke nahi,\nsapnon ki raah mein thakaan bhi muskuraati rahi.",
+"Borahae, jaise chaand ki chaandni,\ndoor hoke bhi paas lagti hai.\nBaingani is aasmaan ke neeche,\nhar dhadkan ek dua lagti hai.",
+"Stage ki battiyaan bujh bhi jaayein,\nARMY ke dil ke diye jalte rahte hain.\nJo saath chala hai har mausam mein,\nwahi toh apne kehlate hain.",
+"Gir kar uthna bhi ek kala hai,\nyeh seekha hai tumse, ae mere saaz.\nAaj bhi jab andhera ghera,\ngunjti hai ek jaani si awaaz.",
+"Aankhon mein sapna, hathon mein light stick,\nhar shaam ek tyohaar ho jaati hai.\nSaat chehre, ek kahani,\nduniya ek parivar ho jaati hai."];
+// members
+const mg=$('#mg');M.forEach(([n,r,c,l])=>{const b=document.createElement('button');b.className='mem';b.style.setProperty('--c',c);b.setAttribute('aria-label',n+' card, tap to flip');b.innerHTML=`<div class="in2"><div class="f"><b>${n}</b><span>${r}</span></div><div class="b">${l.replace(/\n/g,'<br>')}</div></div>`;b.onclick=()=>b.classList.toggle('flip');mg.appendChild(b)});
+// orbs
+$('.orbs').innerHTML=M.map((m,i)=>`<div class="orb" style="--c:${m[2]};--i:${i}"></div>`).join('');
+// timeline reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.3});
+document.querySelectorAll('.ev').forEach(e=>io.observe(e));
+// counters
+const days=(()=>{const n=new Date(),y=n.getFullYear();let d=new Date(y,5,13);if(d<new Date(y,n.getMonth(),n.getDate()))d=new Date(y+1,5,13);return Math.round((d-new Date(y,n.getMonth(),n.getDate()))/864e5)})();
+$('#days').dataset.n=days;$('#yrs').dataset.n=new Date().getFullYear()-2013-(new Date()<new Date(new Date().getFullYear(),5,13)?1:0);
+const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;co.unobserve(e.target);const el=e.target,t=+el.dataset.n,s=performance.now();(function f(now){const p=Math.min((now-s)/1200,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(s)}),{threshold:.6});
+document.querySelectorAll('.stat b').forEach(b=>co.observe(b));
+// poll
+let votes=store.get('btsVotes',M.map(()=>0)),mine=store.get('btsMine',-1);
+function drawPoll(){const tot=votes.reduce((a,b)=>a+b,0);$('#po').innerHTML='';M.forEach((m,i)=>{const p=tot?Math.round(votes[i]/tot*100):0,b=document.createElement('button');b.className='opt'+(i===mine?' mine':'');b.innerHTML=`<i></i><span><em style="font-style:normal">${m[0]}${i===mine?' 💜':''}</em><em style="font-style:normal">${mine>=0?p+'%':''}</em></span>`;b.onclick=()=>{if(mine>=0)votes[mine]--;votes[i]++;mine=i;store.set('btsVotes',votes);store.set('btsMine',mine);drawPoll();burst(innerWidth/2,innerHeight/2,18)};$('#po').appendChild(b);requestAnimationFrame(()=>requestAnimationFrame(()=>b.firstChild.style.width=(mine>=0?p:0)+'%'))});$('#pn').textContent=mine>=0?'Your vote is saved on this device. You can change it anytime.':'Tap a name to vote. Results are saved on your device only.'}
+drawPoll();
+// shayari typewriter
+let si=-1,tm;function show(){si=(si+1+Math.floor(Math.random()*(SH.length-1)))%SH.length;const t=SH[si],el=$('#sh');clearInterval(tm);if(RM){el.textContent=t;return}el.textContent='';let k=0;tm=setInterval(()=>{el.textContent=t.slice(0,++k);if(k>=t.length)clearInterval(tm)},35)}
+$('#nx').onclick=show;show();
+$('#cp').onclick=async()=>{try{await navigator.clipboard.writeText(SH[si]);$('#cp').textContent='Copied'}catch(e){$('#cp').textContent='Select and copy'}setTimeout(()=>$('#cp').textContent='Copy',1500)};
+// theme
+$('#tb').onclick=()=>{const d=document.documentElement,dark=getComputedStyle(d).getPropertyValue('--bg').trim()==='#0d0720';d.dataset.theme=dark?'light':'dark'};
+// canvas particles
+const cv=$('#fx'),cx=cv.getContext('2d');let W,H,P=[];function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight}rs();addEventListener('resize',rs);
+const cols=M.map(m=>m[2]);
+for(let i=0;i<(RM?0:45);i++)P.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+.5,v:Math.random()*.4+.1,c:cols[i%7],tw:Math.random()*6});
+function burst(x,y,n=10){if(RM)return;for(let i=0;i<n;i++){const a=Math.random()*6.28,s=Math.random()*5+2;P.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,h:1,life:1,c:cols[i%7],r:Math.random()*5+4})}}
+(function loop(){cx.clearRect(0,0,W,H);P=P.filter(p=>!p.h||p.life>0);P.forEach(p=>{if(p.h){p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.life-=.016;cx.globalAlpha=Math.max(p.life,0);cx.fillStyle=p.c;cx.font=p.r*3+'px serif';cx.fillText('💜',p.x,p.y)}else{p.y-=p.v;p.tw+=.04;if(p.y<-5){p.y=H+5;p.x=Math.random()*W}cx.globalAlpha=.35+.35*Math.sin(p.tw);cx.fillStyle=p.c;cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);cx.fill()}});cx.globalAlpha=1;requestAnimationFrame(loop)})();
+// hearts
+let hc=store.get('btsHearts',0);$('#cnt').textContent=hc;
+$('#heart').onclick=e=>{hc++;store.set('btsHearts',hc);$('#cnt').textContent=hc;const r=e.currentTarget.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,14)};
+addEventListener('pointerdown',e=>{if(!e.target.closest('button,a'))burst(e.clientX,e.clientY,6)});
+// light stick
+const w=$('#wand');$('#wb').onclick=e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',on);w.style.display=on?'block':'none'};
+addEventListener('pointermove',e=>{w.style.left=e.clientX+'px';w.style.top=e.clientY+'px'});
+</script>
+</body>
+</html>
